@@ -55,6 +55,15 @@ const Keyboard = {
     this.elements.wrapper.appendChild(this.elements.main);
 
     document.body.appendChild(this.elements.wrapper);
+
+    // Add value to text area
+    document.querySelectorAll('.textarea__input').forEach(element => {
+      element.addEventListener('focus', () => {
+        this.open(element.value, currentValue => {
+          element.value = currentValue;
+        });
+      });
+    });
   },
 
   _createKeys () {
@@ -118,7 +127,7 @@ const Keyboard = {
           keyElement.innerHTML = createIconHTML('space_bar');
 
           keyElement.addEventListener('click', () => {
-            this.properties.value += '\n';
+            this.properties.value += ' ';
             this._triggerEvent('oninput');
           });
           break;
@@ -142,7 +151,7 @@ const Keyboard = {
         default:
           keyElement.textContent = key.toLowerCase();
           keyElement.addEventListener('click', () => {
-            this.properties.value += this.properties.capsLock ? key.toUpperCase : key.toLowerCase;
+            this.properties.value += this.properties.capsLock ? key.toUpperCase() : key.toLowerCase();
             this._triggerEvent('oninput');
           });
           break;
@@ -163,7 +172,8 @@ const Keyboard = {
   },
 
   _triggerEvent (handlerName) {
-    console.log('Event Triggered ' + handlerName);
+    // console.log('Event Triggered ' + handlerName);
+    this.elements.textarea.value = this.properties.value;
   },
 
   _toggleCapsLock () {
@@ -174,16 +184,7 @@ const Keyboard = {
         key.textContent = this.properties.capsLock ? key.textContent.toUpperCase() : key.textContent.toLowerCase();
       }
     }
-  },
-
-  open (initialValue, oninput, onclose) {
-
-  },
-
-  close () {
-
   }
-
 };
 window.addEventListener('DOMContentLoaded', function () {
   Keyboard.init();
