@@ -45,6 +45,8 @@ const Keyboard = {
     this.elements.keysContainer.classList.add('keyboard__keys');
     this.elements.keysContainer.appendChild(this._createKeys());
 
+    this.elements.keys = this.elements.keysContainer.querySelectorAll('.keyboard__key');
+
     // Add to DOM
     this.elements.textareaHolder.appendChild(this.elements.textarea);
     this.elements.main.appendChild(this.elements.keysContainer);
@@ -166,6 +168,12 @@ const Keyboard = {
 
   _toggleCapsLock () {
     console.log('Caps Lock Toggled');
+    this.properties.capsLock = !this.properties.capsLock;
+    for (const key of this.elements.keys) {
+      if (key.childElementCount === 0 && !['tab', 'option', 'caps lock', 'enter', 'shift', 'delete', 'command', 'ctrl'].includes(key.textContent)) {
+        key.textContent = this.properties.capsLock ? key.textContent.toUpperCase() : key.textContent.toLowerCase();
+      }
+    }
   },
 
   open (initialValue, oninput, onclose) {
