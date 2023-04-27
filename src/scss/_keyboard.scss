@@ -1,0 +1,42 @@
+@import 'mixin';
+
+.keyboard {
+    @include style($w: 100%, $paddimg-top: 50px, $padding-bottom: 50px, $bgc: #FFC0CB);
+    bottom: 0;
+    user-select: none;
+    transition: bottom 0.4s;
+
+    &__keys {
+        text-align: center;
+    }
+
+    &__key {
+        height: 40px;
+        @include style($w: 5%, $bgc:rgba(255, 255, 255, 0.9), $margin: 3px);
+        border: none;
+        border-radius: 5%;
+        font-size: 1.05rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        vertical-align: top;
+    }
+
+    &__key:active {
+        background-color: rgba(255, 255, 255, 0.6);
+    }
+
+    &__key_wide {
+        width: 7%;
+    }
+
+    &__key_wide-extra {
+        width: 20%;
+    }
+
+}
+
+.keyboard__key_wide-shift {
+    width: 15%;
+}

@@ -11,5 +11,17 @@
         "sourceType": "module"
     },
     "rules": {
+        "semi" : ["warn", "always"],
+        "eqeqeq" : "warn",
+        "no-unused-vars" : "warn",
+        "import/extensions": [
+            "error",
+            "ignorePackages",
+            {
+                "js": "never",
+                "jsx": "never",
+                "mjs": "never"
+            }
+        ]
     }
 }

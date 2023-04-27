@@ -1,0 +1,67 @@
+.keyboard {
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  background-color: #FFC0CB;
+  margin: 0;
+  bottom: 0;
+  user-select: none;
+  transition: bottom 0.4s;
+}
+.keyboard__keys {
+  text-align: center;
+}
+.keyboard__key {
+  height: 40px;
+  width: 5%;
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  margin: 3px;
+  border: none;
+  border-radius: 5%;
+  font-size: 1.05rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: top;
+}
+.keyboard__key:active {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+.keyboard__key_wide {
+  width: 7%;
+}
+.keyboard__key_wide-extra {
+  width: 20%;
+}
+
+.keyboard__key_wide-shift {
+  width: 15%;
+}
+
+.textarea {
+  width: 100%;
+}
+.textarea__input {
+  width: 99%;
+  height: 250px;
+}
+
+.wrapper {
+  margin: 0 15%;
+}
+.wrapper__heading {
+  text-align: center;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
