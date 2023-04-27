@@ -1,7 +1,7 @@
 @import 'mixin';
 
 .keyboard {
-    @include style($w: 100%, $paddimg-top: 50px, $padding-bottom: 50px, $bgc: #FFC0CB);
+    @include style($w: 100%, $padding-top: 50px, $padding-bottom: 50px, $bgc: #FFC0CB);
     bottom: 0;
     user-select: none;
     transition: bottom 0.4s;
@@ -39,3 +39,7 @@
 .keyboard__key_wide-shift {
     width: 15%;
 }
+
+.keyboard__key_pressed { /* Increased specificity */
+    background: #9AB4D9;
+  }
