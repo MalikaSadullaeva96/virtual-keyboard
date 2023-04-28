@@ -44,7 +44,7 @@
   width: 15%;
 }
 
-.keyboard__key_pressed {
+.keyboard__key {
   background-color: #9ab4d9;
 }
 
@@ -54,7 +54,6 @@
 .textarea__input {
   width: 99%;
   height: 250px;
-  caret-color: black;
 }
 
 .wrapper {

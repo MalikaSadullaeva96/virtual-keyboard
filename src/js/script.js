@@ -3,6 +3,9 @@ import createIconHTML from './/icon.js';
 import _toggleCapsLock from './/toggleCapsLock.js';
 
 let shifCount = 0;
+const keyLayoutShift = ['~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', 'delete', 'tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '{', '}', '|', 'caps lock', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '"', 'enter', 'shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?', 'up', 'shift', 'ctrl', 'option', 'command', 'space', 'command', 'option', 'left', 'down', 'right'];
+const keyLayout = ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'delete', 'tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\', 'caps lock', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', 'enter', 'shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 'up', 'shift', 'ctrl', 'option', 'command', 'space', 'command', 'option', 'left', 'down', 'right'];
+
 const Keyboard = {
   elements: {
     wrapper: null,
@@ -42,6 +45,8 @@ const Keyboard = {
     this.elements.textarea.classList.add('textarea__input');
     this.elements.textareaHolder.classList.add('textarea');
 
+    this.elements.textarea.setAttribute('autofocus', 'autofocus');
+
     this.elements.main.classList.add('keyboard');
     this.elements.keysContainer.classList.add('keyboard__keys');
     this.elements.keysContainer.appendChild(this._createKeys());
@@ -57,13 +62,8 @@ const Keyboard = {
 
     document.body.appendChild(this.elements.wrapper);
 
-    // Add value to text area
-    document.querySelectorAll('.textarea__input').forEach(element => {
-      element.addEventListener('focus', () => {
-        this.open(element.value, currentValue => {
-          element.value = currentValue;
-        });
-      });
+    this.elements.textarea.addEventListener('input', () => {
+      this.properties.value = this.elements.textarea.value;
     });
 
     // test
@@ -76,7 +76,7 @@ const Keyboard = {
     const keyCodes = [
       'Backquote', 'Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 'Digit6', 'Digit7', 'Digit8', 'Digit9', 'Digit0', 'Minus', 'Equal', 'Backspace', 'Tab', 'KeyQ', 'KeyW', 'KeyE', 'KeyR', 'KeyT', 'KeyY', 'KeyU', 'KeyI', 'KeyO', 'KeyP', 'BracketLeft', 'BracketRight', 'Backslash', 'CapsLock', 'KeyA', 'KeyS', 'KeyD', 'KeyF', 'KeyG', 'KeyH', 'KeyJ', 'KeyK', 'KeyL', 'Semicolon', 'Quote', 'Enter', 'ShiftLeft', 'KeyZ', 'KeyX', 'KeyC', 'KeyV', 'KeyB', 'KeyN', 'KeyM', 'Comma', 'Period', 'Slash', 'ArrowUp', 'ShiftRight', 'ControlLeft', 'OptionLeft', 'Command', 'Space', 'Command', 'OptionRight', 'ArrowLeft', 'ArrowDown', 'ArrowRight'
     ];
-    const keyLayout = ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'delete', 'tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\', 'caps lock', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', 'enter', 'shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 'up', 'shift', 'ctrl', 'option', 'command', 'space', 'command', 'option', 'left', 'down', 'right'];
+    // const keyLayout = ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'delete', 'tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\', 'caps lock', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', 'enter', 'shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 'up', 'shift', 'ctrl', 'option', 'command', 'space', 'command', 'option', 'left', 'down', 'right'];
     keyLayout.forEach((key, index) => {
       const keyElement = document.createElement('button');
       const insertLineBreak = ['delete', '\\', 'enter', 'shift'].indexOf(key) !== -1;
@@ -93,6 +93,13 @@ const Keyboard = {
 
           keyElement.addEventListener('click', () => {
             this.properties.value = this.properties.value.substring(0, this.properties.value.length - 1);
+            this._triggerEvent('oninput');
+          });
+          break;
+        case 'tab':
+          keyElement.innerHTML = 'tab';
+          keyElement.addEventListener('click', () => {
+            this.properties.value += '    ';
             this._triggerEvent('oninput');
           });
           break;
@@ -127,7 +134,7 @@ const Keyboard = {
           keyElement.innerHTML = createIconHTML('keyboard_return');
 
           keyElement.addEventListener('click', () => {
-            this.properties.value += ' ';
+            this.properties.value += '\n';
             this._triggerEvent('oninput');
           });
           break;
@@ -189,9 +196,17 @@ const Keyboard = {
     const keyCode = event.code;
     const keyElement = this.elements.keysContainer.querySelector(`[data-key="${keyCode}"]`);
     if (keyElement) {
+      keyElement.classList.remove('keyboard__key_pressed');
       if (keyCode === 'CapsLock') {
         _toggleCapsLock(this.properties, this.elements);
         keyElement.classList.toggle('keyboard__key_active', this.properties.capsLock);
+      } else if (keyCode === 'ShiftLeft' || keyCode === 'ShiftRight') {
+        // Modify the key values on Shift key release
+        this.elements.keys.forEach((key, index) => {
+          if (key.textContent.length === 1) {
+            key.textContent = event.shiftKey ? keyLayoutShift[index] : keyLayout[index];
+          }
+        });
       }
     }
   },
@@ -212,6 +227,18 @@ const Keyboard = {
       } else if (key === 'Backspace') {
         this.properties.value = this.properties.value.substring(0, this.properties.value.length - 1);
         this._triggerEvent('oninput');
+      } else if (key === 'Enter') {
+        this.properties.value += '\n';
+        this._triggerEvent('oninput');
+      } else if (key === 'Tab') {
+        this.properties.value += '    ';
+        this._triggerEvent('oninput');
+      } else if (key === 'Shift') {
+        this.elements.keys.forEach((key, index) => {
+          if (key.textContent.length === 1) {
+            key.textContent = event.shiftKey ? keyLayoutShift[index] : keyLayout[index];
+          }
+        });
       } else {
         this.properties.value += (this.properties.capsLock && !event.shiftKey) || (!this.properties.capsLock && event.shiftKey) ? key.toUpperCase() : key.toLowerCase();
         this._triggerEvent('oninput');
