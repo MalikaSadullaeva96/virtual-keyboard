@@ -8,15 +8,19 @@ function toggleLanguage (Keyboard, keyLayoutEN, keyLayoutRU) {
   if (Keyboard.properties.language === 'EN') {
     Keyboard.properties.language = 'RU';
     Keyboard.elements.keys.forEach((key, index) => {
-      if (key.textContent.length === 1) {
-        key.textContent = keyLayoutRU[index];
+      const keyText = key.textContent.trim();
+      if (keyText.length === 1) {
+        const keyRU = keyLayoutRU[index];
+        key.textContent = Keyboard.properties.capsLock ? keyRU.toUpperCase() : keyRU.toLowerCase();
       }
     });
   } else {
     Keyboard.properties.language = 'EN';
     Keyboard.elements.keys.forEach((key, index) => {
-      if (key.textContent.length === 1) {
-        key.textContent = keyLayoutEN[index];
+      const keyText = key.textContent.trim();
+      if (keyText.length === 1) {
+        const keyEN = keyLayoutEN[index];
+        key.textContent = Keyboard.properties.capsLock ? keyEN.toUpperCase() : keyEN.toLowerCase();
       }
     });
   }
@@ -37,8 +41,14 @@ export function handleKeyDown (event, Keyboard, keyLayout, keyLayoutShift) {
         return;
       }
     }
-    const textSelected = Keyboard.elements.textarea.selectionStart === 0 && Keyboard.elements.textarea.selectionEnd === Keyboard.properties.value.length;
 
+    if (event.ctrlKey || event.altKey) {
+      Keyboard.properties.value = Keyboard.properties.value.replace(/control/gi, '');
+      Keyboard._triggerEvent('oninput');
+    }
+    // Ignore Control key
+
+    const textSelected = Keyboard.elements.textarea.selectionStart === 0 && Keyboard.elements.textarea.selectionEnd === Keyboard.properties.value.length;
     if (key === 'Control') {
       controlPressed = true;
     }
@@ -69,10 +79,8 @@ export function handleKeyDown (event, Keyboard, keyLayout, keyLayoutShift) {
         }
       });
     } else if (key !== 'Control') {
-      Keyboard.properties.value += (Keyboard.properties.capsLock && !event.shiftKey) || (!Keyboard.properties.capsLock && event.shiftKey) ? key.toUpperCase() : key.toLowerCase();
-      Keyboard._triggerEvent('oninput');
-    } else {
-      Keyboard.properties.value += (Keyboard.properties.capsLock && !event.shiftKey) || (!Keyboard.properties.capsLock && event.shiftKey) ? key.toUpperCase() : key.toLowerCase();
+      const keyText = keyElement.textContent.trim();
+      Keyboard.properties.value += (Keyboard.properties.capsLock && !event.shiftKey) || (!Keyboard.properties.capsLock && event.shiftKey) ? keyText.toUpperCase() : keyText.toLowerCase();
       Keyboard._triggerEvent('oninput');
     }
   }

@@ -124,10 +124,14 @@ const Keyboard = {
         case 'option':
           keyElement.classList.add('keyboard__key_wide');
           keyElement.innerHTML = 'option';
+          this.properties.value += '';
+          this._triggerEvent('oninput');
           break;
 
         case 'command':
           keyElement.classList.add('keyboard__key_wide');
+          this.properties.value += '';
+          this._triggerEvent('oninput');
           keyElement.innerHTML = 'command';
           break;
 
@@ -169,10 +173,23 @@ const Keyboard = {
 
         default:
           keyElement.textContent = key.toLowerCase();
-          keyElement.addEventListener('click', () => {
-            this.properties.value += this.properties.capsLock ? key.toUpperCase() : key.toLowerCase();
-            this._triggerEvent('oninput');
-          });
+          // keyElement.addEventListener('click', () => {
+          //   this.properties.value += this.properties.capsLock ? key.toUpperCase() : key.toLowerCase();
+          //   this._triggerEvent('oninput');
+          // });
+          // keyElement.addEventListener('click', () => {
+          //   const keyText = keyElement.textContent.trim();
+          //   this.properties.value += (this.properties.capsLock && !event.shiftKey) || (!this.properties.capsLock && event.shiftKey) ? keyText.toUpperCase() : keyText.toLowerCase();
+          //   this._triggerEvent('oninput');
+          // });
+          console.log('--------->' + key);
+          if (key !== 'ctrl') {
+            keyElement.addEventListener('click', () => {
+              const keyText = keyElement.textContent.trim();
+              this.properties.value += (this.properties.capsLock && !event.shiftKey) || (!this.properties.capsLock && event.shiftKey) ? keyText.toUpperCase() : keyText.toLowerCase();
+              this._triggerEvent('oninput');
+            });
+          }
           break;
       };
       fragment.appendChild(keyElement);
