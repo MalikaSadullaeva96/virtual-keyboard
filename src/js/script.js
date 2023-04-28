@@ -27,7 +27,8 @@ const Keyboard = {
   properties: {
     value: '',
     capsLock: false,
-    language: 'EN'
+    language: 'EN',
+    selectAll: false
   },
 
   init () {
@@ -90,12 +91,23 @@ const Keyboard = {
 
       switch (key) {
         case 'delete':
+          // keyElement.classList.add('keyboard__key_wide');
+          // keyElement.innerHTML = createIconHTML('backspace');
+
+          // keyElement.addEventListener('click', () => {
+          //   this.properties.value = this.properties.value.substring(0, this.properties.value.length - 1);
+          //   this._triggerEvent('oninput');
+          // });
           keyElement.classList.add('keyboard__key_wide');
           keyElement.innerHTML = createIconHTML('backspace');
-
           keyElement.addEventListener('click', () => {
-            this.properties.value = this.properties.value.substring(0, this.properties.value.length - 1);
-            this._triggerEvent('oninput');
+            if (Keyboard.properties.selectAll) {
+              Keyboard.properties.value = '';
+              Keyboard.properties.selectAll = false;
+            } else {
+              Keyboard.properties.value = Keyboard.properties.value.substring(0, Keyboard.properties.value.length - 1);
+            }
+            Keyboard._triggerEvent('oninput');
           });
           break;
         case 'tab':
@@ -124,14 +136,14 @@ const Keyboard = {
         case 'option':
           keyElement.classList.add('keyboard__key_wide');
           keyElement.innerHTML = 'option';
-          this.properties.value += '';
-          this._triggerEvent('oninput');
+          this.properties.value = '';
+          // this._triggerEvent('oninput');
           break;
 
         case 'command':
           keyElement.classList.add('keyboard__key_wide');
-          this.properties.value += '';
-          this._triggerEvent('oninput');
+          this.properties.value = '';
+          // this._triggerEvent('oninput');
           keyElement.innerHTML = 'command';
           break;
 

@@ -38,6 +38,7 @@ export function handleKeyDown (event, Keyboard, keyLayout, keyLayoutShift) {
     if (event.metaKey || event.ctrlKey) {
       if (key.toLowerCase() === 'a') {
         Keyboard.elements.textarea.select();
+        Keyboard.properties.selectAll = true;
         return;
       }
     }
@@ -78,7 +79,7 @@ export function handleKeyDown (event, Keyboard, keyLayout, keyLayoutShift) {
           key.textContent = event.shiftKey ? keyLayoutShift[index] : keyLayout[index];
         }
       });
-    } else if (key !== 'Control') {
+    } else if (key !== 'Control' && key !== 'Meta' && key !== 'Alt') {
       const keyText = keyElement.textContent.trim();
       Keyboard.properties.value += (Keyboard.properties.capsLock && !event.shiftKey) || (!Keyboard.properties.capsLock && event.shiftKey) ? keyText.toUpperCase() : keyText.toLowerCase();
       Keyboard._triggerEvent('oninput');
