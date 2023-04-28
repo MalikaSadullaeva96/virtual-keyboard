@@ -219,13 +219,21 @@ const Keyboard = {
       event.preventDefault();
       keyElement.classList.add('keyboard__key_pressed');
 
+      if (event.metaKey || event.ctrlKey) {
+        if (key.toLowerCase() === 'a') {
+          this.elements.textarea.select();
+          return;
+        }
+      }
+      const textSelected = this.elements.textarea.selectionStart === 0 && this.elements.textarea.selectionEnd === this.properties.value.length;
+
       if (key === 'CapsLock') {
         if (!event.repeat) {
           _toggleCapsLock(this.properties, this.elements);
           keyElement.classList.toggle('keyboard__key_active', this.properties.capsLock);
         }
       } else if (key === 'Backspace') {
-        this.properties.value = this.properties.value.substring(0, this.properties.value.length - 1);
+        this.properties.value = textSelected ? '' : this.properties.value.substring(0, this.properties.value.length - 1);
         this._triggerEvent('oninput');
       } else if (key === 'Enter') {
         this.properties.value += '\n';
