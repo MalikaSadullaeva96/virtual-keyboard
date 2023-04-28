@@ -1,5 +1,7 @@
 /* eslint-disable import/extensions */
 import createIconHTML from './/icon.js';
+import _toggleCapsLock from './/toggleCapsLock.js';
+
 let shifCount = 0;
 const Keyboard = {
   elements: {
@@ -14,8 +16,7 @@ const Keyboard = {
   },
 
   evenHandlers: {
-    oninput: null,
-    onclose: null
+    oninput: null
   },
 
   properties: {
@@ -67,6 +68,7 @@ const Keyboard = {
 
     // test
     window.addEventListener('keydown', (event) => this._handleKeyDown(event));
+    window.addEventListener('keyup', (event) => this._handleKeyUp(event));
   },
 
   _createKeys () {
@@ -100,7 +102,7 @@ const Keyboard = {
           keyElement.innerHTML = 'caps lock';
 
           keyElement.addEventListener('click', () => {
-            this._toggleCapsLock();
+            _toggleCapsLock(this.properties, this.elements);
             keyElement.classList.toggle('keyboard__key_active', this.properties.capsLock);
           });
           break;
@@ -180,26 +182,15 @@ const Keyboard = {
   },
 
   _triggerEvent (handlerName) {
-    // console.log('Event Triggered ' + handlerName);
     this.elements.textarea.value = this.properties.value;
   },
 
-  _toggleCapsLock () {
-    console.log('Caps Lock Toggled');
-    this.properties.capsLock = !this.properties.capsLock;
-    for (const key of this.elements.keys) {
-      if (key.childElementCount === 0 && !['tab', 'option', 'caps lock', 'enter', 'shift', 'delete', 'command', 'ctrl'].includes(key.textContent)) {
-        key.textContent = this.properties.capsLock ? key.textContent.toUpperCase() : key.textContent.toLowerCase();
-      }
-    }
-  },
   _handleKeyUp (event) {
     const keyCode = event.code;
     const keyElement = this.elements.keysContainer.querySelector(`[data-key="${keyCode}"]`);
-
     if (keyElement) {
-      event.preventDefault();
-      keyElement.classList.remove('keyboard__key_pressed');
+      _toggleCapsLock(this.properties, this.elements);
+      keyElement.classList.toggle('keyboard__key_active', this.properties.capsLock);
     }
   },
 
@@ -207,19 +198,20 @@ const Keyboard = {
     const key = event.key;
     const keyCode = event.code;
     const keyElement = this.elements.keysContainer.querySelector(`[data-key="${keyCode}"]`);
-
     if (keyElement) {
       event.preventDefault();
       keyElement.classList.add('keyboard__key_pressed');
 
       if (key === 'CapsLock') {
-        this._toggleCapsLock();
-        keyElement.classList.toggle('keyboard__key_active', this.properties.capsLock);
+        if (!event.repeat) {
+          _toggleCapsLock(this.properties, this.elements);
+          keyElement.classList.toggle('keyboard__key_active', this.properties.capsLock);
+        }
       } else if (key === 'Backspace') {
         this.properties.value = this.properties.value.substring(0, this.properties.value.length - 1);
         this._triggerEvent('oninput');
       } else {
-        this.properties.value += this.properties.capsLock && !event.shiftKey || !this.properties.capsLock && event.shiftKey ? key.toUpperCase() : key.toLowerCase();
+        this.properties.value += (this.properties.capsLock && !event.shiftKey) || (!this.properties.capsLock && event.shiftKey) ? key.toUpperCase() : key.toLowerCase();
         this._triggerEvent('oninput');
       }
     }
