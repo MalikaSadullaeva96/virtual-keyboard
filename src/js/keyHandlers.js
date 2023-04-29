@@ -81,7 +81,7 @@ export function handleKeyDown (event, Keyboard, keyLayout, keyLayoutShift) {
           }
         });
       }
-    } else if (key !== 'Control' && key !== 'Meta' && key !== 'Alt') {
+    } else if (key !== 'Control' && key !== 'Meta' && key !== 'Alt' && key !== 'ArrowUp' && key !== 'ArrowDown' && key !== 'ArrowLeft' && key !== 'ArrowRight') {
       const keyText = keyElement.textContent.trim();
       Keyboard.properties.value += (Keyboard.properties.capsLock && !event.shiftKey) || (!Keyboard.properties.capsLock && event.shiftKey) ? keyText.toUpperCase() : keyText.toLowerCase();
       Keyboard._triggerEvent('oninput');

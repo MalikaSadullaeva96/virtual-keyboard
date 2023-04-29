@@ -2,6 +2,7 @@
 import createIconHTML from './/icon.js';
 import _toggleCapsLock from './/toggleCapsLock.js';
 import { handleKeyDown, handleKeyUp } from './keyHandlers.js';
+import { addTextareaNavigation } from './/textAreaNav.js';
 let ctrlAPressed = false;
 let shiftPressed = false;
 
@@ -63,6 +64,9 @@ const Keyboard = {
     // Add to DOM
     this.elements.textareaHolder.appendChild(this.elements.textarea);
     this.elements.main.appendChild(this.elements.keysContainer);
+    this.elements.textarea.addEventListener('input', (event) => {
+      this.properties.value = this.elements.textarea.value;
+    });
     this.elements.wrapper.appendChild(this.elements.heading);
     this.elements.wrapper.appendChild(this.elements.textareaHolder);
     this.elements.wrapper.appendChild(this.elements.main);
@@ -81,9 +85,14 @@ const Keyboard = {
       if (event.metaKey && event.key.toLowerCase() === 'a') {
         ctrlAPressed = true;
       }
+      if (event.key === 'ArrowUp') {
+        console.log('ArrowUp pressed');
+        event.preventDefault();
+      }
     });
 
     // move cursor
+    addTextareaNavigation(this.elements.textarea);
   },
 
   _createKeys () {
@@ -192,10 +201,10 @@ const Keyboard = {
           break;
 
         case 'up':
+          this.properties.value = '';
           keyElement.innerHTML = createIconHTML('arrow_drop_up');
           keyElement.addEventListener('click', () => {
             const cursorPosition = this.elements.textarea.selectionStart;
-            console.log('UP---------->' + cursorPosition);
             const lines = this.elements.textarea.value.slice(0, cursorPosition).split('\n');
             const currentLine = lines.length - 1;
             const positionInLine = lines[currentLine].length;
@@ -214,7 +223,6 @@ const Keyboard = {
           keyElement.innerHTML = createIconHTML('arrow_left');
           keyElement.addEventListener('click', () => {
             const cursorPosition = this.elements.textarea.selectionStart;
-            console.log('Before moving left:', cursorPosition);
             this.elements.textarea.setSelectionRange(cursorPosition - 1, cursorPosition - 1);
             const updatedCursorPosition = this.elements.textarea.selectionStart;
             console.log('After moving left:', updatedCursorPosition);
@@ -226,7 +234,6 @@ const Keyboard = {
           keyElement.innerHTML = createIconHTML('arrow_right');
           keyElement.addEventListener('click', () => {
             const cursorPosition = this.elements.textarea.selectionStart;
-            console.log('Before moving left:', cursorPosition);
             this.elements.textarea.setSelectionRange(cursorPosition + 1, cursorPosition + 1);
             const updatedCursorPosition = this.elements.textarea.selectionStart;
             console.log('After moving left:', updatedCursorPosition);
@@ -239,7 +246,6 @@ const Keyboard = {
 
           keyElement.addEventListener('click', () => {
             const cursorPosition = this.elements.textarea.selectionStart;
-            console.log('Down---------->' + cursorPosition);
             const lines = this.elements.textarea.value.slice(0, cursorPosition).split('\n');
             const currentLine = lines.length - 1;
             const positionInLine = lines[currentLine].length;
@@ -257,7 +263,8 @@ const Keyboard = {
 
         default:
           keyElement.textContent = key.toLowerCase();
-          if (key !== 'ctrl') {
+          console.log('DEFAULT');
+          if (key !== 'ctrl' || (key === 'arrow_left' || key === 'arrow_right')) {
             keyElement.addEventListener('click', () => {
               const keyText = keyElement.textContent.trim();
               this.properties.value += (this.properties.capsLock && !event.shiftKey) || (!this.properties.capsLock && event.shiftKey) ? keyText.toUpperCase() : keyText.toLowerCase();
