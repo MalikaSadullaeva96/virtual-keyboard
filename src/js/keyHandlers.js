@@ -1,6 +1,6 @@
 /* eslint-disable import/extensions */
 import _toggleCapsLock from './/toggleCapsLock.js';
-import { russianLayout } from './script.js';
+import { russianLayoutShift, russianLayout } from './script.js';
 let controlPressed = false;
 let optionPressed = false;
 
@@ -74,11 +74,24 @@ export function handleKeyDown (event, Keyboard, keyLayout, keyLayoutShift) {
       Keyboard.properties.value += '    ';
       Keyboard._triggerEvent('oninput');
     } else if (key === 'Shift') {
-      Keyboard.elements.keys.forEach((key, index) => {
-        if (key.textContent.length === 1) {
-          key.textContent = event.shiftKey ? keyLayoutShift[index] : keyLayout[index];
-        }
-      });
+    //   Keyboard.elements.keys.forEach((key, index) => {
+    //     if (key.textContent.length === 1) {
+    //       key.textContent = event.shiftKey ? keyLayoutShift[index] : keyLayout[index];
+    //     }
+    //   });
+      if (Keyboard.properties.language === 'EN') {
+        Keyboard.elements.keys.forEach((key, index) => {
+          if (key.textContent.length === 1) {
+            key.textContent = event.shiftKey ? keyLayoutShift[index] : keyLayout[index];
+          }
+        });
+      } else if (Keyboard.properties.language === 'RU') {
+        Keyboard.elements.keys.forEach((key, index) => {
+          if (key.textContent.length === 1) {
+            key.textContent = event.shiftKey ? russianLayoutShift[index] : russianLayout[index];
+          }
+        });
+      }
     } else if (key !== 'Control' && key !== 'Meta' && key !== 'Alt') {
       const keyText = keyElement.textContent.trim();
       Keyboard.properties.value += (Keyboard.properties.capsLock && !event.shiftKey) || (!Keyboard.properties.capsLock && event.shiftKey) ? keyText.toUpperCase() : keyText.toLowerCase();
@@ -100,11 +113,28 @@ export function handleKeyUp (event, Keyboard, keyLayout, keyLayoutShift) {
       _toggleCapsLock(Keyboard.properties, Keyboard.elements);
       keyElement.classList.toggle('keyboard__key_active', Keyboard.properties.capsLock);
     } else if (keyCode === 'ShiftLeft' || keyCode === 'ShiftRight') {
-      Keyboard.elements.keys.forEach((key, index) => {
-        if (key.textContent.length === 1) {
-          key.textContent = event.shiftKey ? keyLayoutShift[index] : keyLayout[index];
-        }
-      });
+    //   Keyboard.elements.keys.forEach((key, index) => {
+    //     if (key.textContent.length === 1) {
+    //       key.textContent = event.shiftKey ? keyLayoutShift[index] : keyLayout[index];
+    //     }
+    //   });
+      if (Keyboard.properties.language === 'EN') {
+        Keyboard.elements.keys.forEach((key, index) => {
+          if (key.textContent.length === 1) {
+            key.textContent = keyLayout[index];
+          }
+        });
+      } else if (Keyboard.properties.language === 'RU') {
+        Keyboard.elements.keys.forEach((key, index) => {
+          if (key.textContent.length === 1) {
+            key.textContent = russianLayout[index];
+          }
+        });
+      }
+    } else {
+      if (event.key.toLowerCase() === 'a') {
+        Keyboard.properties.selectAll = false;
+      }
     }
   }
 };
