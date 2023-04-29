@@ -42,14 +42,8 @@ export function handleKeyDown (event, Keyboard, keyLayout, keyLayoutShift) {
         return;
       }
     }
-
-    if (event.ctrlKey || event.altKey) {
-      Keyboard.properties.value = Keyboard.properties.value.replace(/control/gi, '');
-      Keyboard._triggerEvent('oninput');
-    }
-    // Ignore Control key
-
     const textSelected = Keyboard.elements.textarea.selectionStart === 0 && Keyboard.elements.textarea.selectionEnd === Keyboard.properties.value.length;
+
     if (key === 'Control') {
       controlPressed = true;
     }
@@ -74,11 +68,6 @@ export function handleKeyDown (event, Keyboard, keyLayout, keyLayoutShift) {
       Keyboard.properties.value += '    ';
       Keyboard._triggerEvent('oninput');
     } else if (key === 'Shift') {
-    //   Keyboard.elements.keys.forEach((key, index) => {
-    //     if (key.textContent.length === 1) {
-    //       key.textContent = event.shiftKey ? keyLayoutShift[index] : keyLayout[index];
-    //     }
-    //   });
       if (Keyboard.properties.language === 'EN') {
         Keyboard.elements.keys.forEach((key, index) => {
           if (key.textContent.length === 1) {
@@ -113,11 +102,6 @@ export function handleKeyUp (event, Keyboard, keyLayout, keyLayoutShift) {
       _toggleCapsLock(Keyboard.properties, Keyboard.elements);
       keyElement.classList.toggle('keyboard__key_active', Keyboard.properties.capsLock);
     } else if (keyCode === 'ShiftLeft' || keyCode === 'ShiftRight') {
-    //   Keyboard.elements.keys.forEach((key, index) => {
-    //     if (key.textContent.length === 1) {
-    //       key.textContent = event.shiftKey ? keyLayoutShift[index] : keyLayout[index];
-    //     }
-    //   });
       if (Keyboard.properties.language === 'EN') {
         Keyboard.elements.keys.forEach((key, index) => {
           if (key.textContent.length === 1) {

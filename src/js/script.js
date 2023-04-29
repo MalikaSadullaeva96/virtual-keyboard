@@ -2,6 +2,7 @@
 import createIconHTML from './/icon.js';
 import _toggleCapsLock from './/toggleCapsLock.js';
 import { handleKeyDown, handleKeyUp } from './keyHandlers.js';
+let ctrlAPressed = false;
 let shiftPressed = false;
 
 let shifCount = 0;
@@ -75,6 +76,12 @@ const Keyboard = {
     // test
     window.addEventListener('keydown', (event) => handleKeyDown(event, Keyboard, keyLayout, keyLayoutShift));
     window.addEventListener('keyup', (event) => handleKeyUp(event, Keyboard, keyLayout, keyLayoutShift));
+
+    document.addEventListener('keydown', (event) => {
+      if (event.metaKey && event.key.toLowerCase() === 'a') {
+        ctrlAPressed = true;
+      }
+    });
   },
 
   _createKeys () {
@@ -95,15 +102,17 @@ const Keyboard = {
         case 'delete':
           keyElement.classList.add('keyboard__key_wide');
           keyElement.innerHTML = createIconHTML('backspace');
+
           keyElement.addEventListener('click', () => {
-            if (Keyboard.properties.selectAll) {
+            if (ctrlAPressed) {
               Keyboard.properties.value = '';
-              Keyboard.properties.selectAll = false;
+              ctrlAPressed = false; // Reset the flag after deleting the text
             } else {
               Keyboard.properties.value = Keyboard.properties.value.substring(0, Keyboard.properties.value.length - 1);
             }
             Keyboard._triggerEvent('oninput');
           });
+
           break;
         case 'tab':
           keyElement.innerHTML = 'tab';
@@ -152,13 +161,11 @@ const Keyboard = {
           keyElement.classList.add('keyboard__key_wide');
           keyElement.innerHTML = 'option';
           this.properties.value = '';
-          // this._triggerEvent('oninput');
           break;
 
         case 'command':
           keyElement.classList.add('keyboard__key_wide');
           this.properties.value = '';
-          // this._triggerEvent('oninput');
           keyElement.innerHTML = 'command';
           break;
 
