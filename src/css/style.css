@@ -1,3 +1,9 @@
+.keyboard__key:active,
+.keyboard .keyboard__key_pressed {
+  background-color: #9ab4d9;
+  border-radius: 20%;
+}
+
 .keyboard {
   width: 100%;
   padding-left: 0;
@@ -30,9 +36,6 @@
   justify-content: center;
   vertical-align: top;
 }
-.keyboard__key:active {
-  background-color: rgba(255, 255, 255, 0.6);
-}
 .keyboard__key_wide {
   width: 8%;
 }
@@ -42,10 +45,6 @@
 
 .keyboard__key_wide-shift {
   width: 15%;
-}
-
-.keyboard__key_pressed {
-  background-color: #9ab4d9;
 }
 
 .textarea {

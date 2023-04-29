@@ -1,5 +1,10 @@
 @import 'mixin';
 
+%style {
+    background-color: #9ab4d9;
+    border-radius: 20%;
+}
+
 .keyboard {
     @include style($w: 100%, $padding-top: 50px, $padding-bottom: 50px, $bgc: #FFC0CB);
     bottom: 0;
@@ -22,8 +27,9 @@
         vertical-align: top;
     }
 
-    &__key:active {
-        background-color: rgba(255, 255, 255, 0.6);
+    &__key:active,
+    .keyboard__key_pressed {
+        @extend %style;
     }
 
     &__key_wide {
@@ -38,8 +44,4 @@
 
 .keyboard__key_wide-shift {
     width: 15%;
-}
-
-.keyboard__key_pressed {
-   background-color: #9ab4d9;
 }
