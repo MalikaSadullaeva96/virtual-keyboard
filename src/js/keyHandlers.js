@@ -59,7 +59,23 @@ export function handleKeyDown (event, Keyboard, keyLayout, keyLayoutShift) {
         keyElement.classList.toggle('keyboard__key_active', Keyboard.properties.capsLock);
       }
     } else if (key === 'Backspace') {
-      Keyboard.properties.value = textSelected ? '' : Keyboard.properties.value.substring(0, Keyboard.properties.value.length - 1);
+      // Keyboard.properties.value = textSelected ? '' : Keyboard.properties.value.substring(0, Keyboard.properties.value.length - 1);
+      // Keyboard._triggerEvent('oninput');
+      const textarea = Keyboard.elements.textarea;
+      const cursorPosition = textarea.selectionStart;
+      const selectionEnd = textarea.selectionEnd;
+
+      if (textSelected) {
+        // If text is selected, delete the selected portion
+        Keyboard.properties.value = Keyboard.properties.value.slice(selectionEnd);
+        textarea.setSelectionRange(cursorPosition, cursorPosition);
+      } else if (cursorPosition > 0) {
+        // If there is text before the cursor, delete the character before the cursor
+        Keyboard.properties.value = Keyboard.properties.value.slice(0, cursorPosition - 1) + Keyboard.properties.value.slice(cursorPosition);
+        textarea.setSelectionRange(cursorPosition - 1, cursorPosition - 1);
+      }
+
+      textarea.focus();
       Keyboard._triggerEvent('oninput');
     } else if (key === 'Enter') {
       Keyboard.properties.value += '\n';

@@ -113,14 +113,24 @@ const Keyboard = {
         case 'delete':
           keyElement.classList.add('keyboard__key_wide');
           keyElement.innerHTML = createIconHTML('backspace');
-
           keyElement.addEventListener('click', () => {
+            const textarea = Keyboard.elements.textarea;
+            const cursorPosition = textarea.selectionStart;
+            const selectionEnd = textarea.selectionEnd;
+
             if (ctrlAPressed) {
               Keyboard.properties.value = '';
-              ctrlAPressed = false; // Reset the flag after deleting the text
-            } else {
-              Keyboard.properties.value = Keyboard.properties.value.substring(0, Keyboard.properties.value.length - 1);
+              ctrlAPressed = false;
+              textarea.setSelectionRange(0, 0);
+            } else if (selectionEnd > cursorPosition) {
+              Keyboard.properties.value = Keyboard.properties.value.slice(0, cursorPosition) + Keyboard.properties.value.slice(selectionEnd);
+              textarea.setSelectionRange(cursorPosition, cursorPosition);
+            } else if (cursorPosition > 0) {
+              Keyboard.properties.value = Keyboard.properties.value.slice(0, cursorPosition - 1) + Keyboard.properties.value.slice(cursorPosition);
+              textarea.setSelectionRange(cursorPosition - 1, cursorPosition - 1);
             }
+
+            textarea.focus();
             Keyboard._triggerEvent('oninput');
           });
 
@@ -148,6 +158,7 @@ const Keyboard = {
           keyElement.innerHTML = 'shift';
           keyElement.addEventListener('mousedown', () => {
             shiftPressed = true;
+            console.log(shiftPressed);
             const layout = Keyboard.properties.language === 'EN' ? keyLayoutShift : russianLayoutShift;
             Keyboard.elements.keys.forEach((key, index) => {
               if (key.textContent.length === 1) {
