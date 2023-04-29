@@ -82,6 +82,8 @@ const Keyboard = {
         ctrlAPressed = true;
       }
     });
+
+    // move cursor
   },
 
   _createKeys () {
@@ -195,10 +197,26 @@ const Keyboard = {
 
         case 'left':
           keyElement.innerHTML = createIconHTML('arrow_left');
+          keyElement.addEventListener('click', () => {
+            const cursorPosition = this.elements.textarea.selectionStart;
+            console.log('Before moving left:', cursorPosition);
+            this.elements.textarea.setSelectionRange(cursorPosition - 1, cursorPosition - 1);
+            const updatedCursorPosition = this.elements.textarea.selectionStart;
+            console.log('After moving left:', updatedCursorPosition);
+            this.elements.textarea.focus();
+          });
           break;
 
         case 'right':
           keyElement.innerHTML = createIconHTML('arrow_right');
+          keyElement.addEventListener('click', () => {
+            const cursorPosition = this.elements.textarea.selectionStart;
+            console.log('Before moving left:', cursorPosition);
+            this.elements.textarea.setSelectionRange(cursorPosition + 1, cursorPosition + 1);
+            const updatedCursorPosition = this.elements.textarea.selectionStart;
+            console.log('After moving left:', updatedCursorPosition);
+            this.elements.textarea.focus();
+          });
           break;
 
         case 'down':

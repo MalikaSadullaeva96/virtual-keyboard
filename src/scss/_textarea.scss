@@ -6,5 +6,9 @@
         height: 250px;
         caret-color: black;
     }
+    &__input:focus {
+        outline: none;
+        caret-color: black;
+      }
     
 }
