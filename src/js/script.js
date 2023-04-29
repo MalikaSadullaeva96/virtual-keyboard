@@ -42,6 +42,11 @@ const Keyboard = {
     this.elements.textarea = document.createElement('textarea');
     this.elements.textareaHolder = document.createElement('div');
 
+    // create info
+    this.elements.info = document.createElement('p');
+    this.elements.info.innerHTML = 'Клавиатура создана в операционной системе MacOS<br>Для переключения языка комбинация: ctrl + option<br>Для выделения текста: command + a';
+    // end
+
     this.elements.main = document.createElement('div');
     this.elements.keysContainer = document.createElement('div');
 
@@ -70,6 +75,8 @@ const Keyboard = {
     this.elements.wrapper.appendChild(this.elements.heading);
     this.elements.wrapper.appendChild(this.elements.textareaHolder);
     this.elements.wrapper.appendChild(this.elements.main);
+
+    this.elements.wrapper.appendChild(this.elements.info);
 
     document.body.appendChild(this.elements.wrapper);
 

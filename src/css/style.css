@@ -56,6 +56,10 @@
   height: 250px;
   caret-color: black;
 }
+.textarea__input:focus {
+  outline: none;
+  caret-color: black;
+}
 
 .wrapper {
   margin: 0 15%;
@@ -63,6 +67,11 @@
 .wrapper__heading {
   text-align: center;
   font-size: 2rem;
+}
+
+p {
+  text-align: center;
+  font-size: 20px;
 }
 
 body {
