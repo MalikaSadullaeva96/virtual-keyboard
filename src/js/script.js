@@ -193,6 +193,21 @@ const Keyboard = {
 
         case 'up':
           keyElement.innerHTML = createIconHTML('arrow_drop_up');
+          keyElement.addEventListener('click', () => {
+            const cursorPosition = this.elements.textarea.selectionStart;
+            console.log('UP---------->' + cursorPosition);
+            const lines = this.elements.textarea.value.slice(0, cursorPosition).split('\n');
+            const currentLine = lines.length - 1;
+            const positionInLine = lines[currentLine].length;
+
+            if (currentLine > 0) {
+              const previousLineLength = lines[currentLine - 1].length;
+              const newPosition = cursorPosition - positionInLine - Math.min(previousLineLength, positionInLine) - 1;
+              this.elements.textarea.setSelectionRange(newPosition, newPosition);
+            }
+
+            this.elements.textarea.focus();
+          });
           break;
 
         case 'left':
@@ -221,6 +236,23 @@ const Keyboard = {
 
         case 'down':
           keyElement.innerHTML = createIconHTML('arrow_drop_down');
+
+          keyElement.addEventListener('click', () => {
+            const cursorPosition = this.elements.textarea.selectionStart;
+            console.log('Down---------->' + cursorPosition);
+            const lines = this.elements.textarea.value.slice(0, cursorPosition).split('\n');
+            const currentLine = lines.length - 1;
+            const positionInLine = lines[currentLine].length;
+            const totalLines = this.elements.textarea.value.split('\n');
+
+            if (currentLine < totalLines.length - 1) {
+              const nextLineLength = totalLines[currentLine + 1].length;
+              const newPosition = cursorPosition + nextLineLength + 1 - Math.min(nextLineLength, positionInLine);
+              this.elements.textarea.setSelectionRange(newPosition, newPosition);
+            }
+
+            this.elements.textarea.focus();
+          });
           break;
 
         default:
