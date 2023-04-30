@@ -5,6 +5,10 @@ let controlPressed = false;
 let optionPressed = false;
 let commandPressed = false;
 
+function isMac () {
+  return navigator.platform.toUpperCase().includes('MAC');
+}
+
 function toggleLanguage (Keyboard, keyLayoutEN, keyLayoutRU) {
   if (Keyboard.properties.language === 'EN') {
     Keyboard.properties.language = 'RU';
@@ -110,9 +114,12 @@ export function handleKeyUp (event, Keyboard, keyLayout, keyLayoutShift) {
     }
     if ((event.altKey) && optionPressed) {
       optionPressed = false;
-    } else if (keyCode === 'CapsLock') {
-      _toggleCapsLock(Keyboard.properties, Keyboard.elements);
-      keyElement.classList.toggle('keyboard__key_active', Keyboard.properties.capsLock);
+    }
+    if (isMac()) {
+      if (keyCode === 'CapsLock') {
+        _toggleCapsLock(Keyboard.properties, Keyboard.elements);
+        keyElement.classList.toggle('keyboard__key_active', Keyboard.properties.capsLock);
+      }
     } else if (keyCode === 'ShiftLeft' || keyCode === 'ShiftRight') {
       if (Keyboard.properties.language === 'EN') {
         Keyboard.elements.keys.forEach((key, index) => {
