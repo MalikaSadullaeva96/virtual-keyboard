@@ -63,6 +63,7 @@ export function handleKeyDown (event, Keyboard, keyLayout, keyLayoutShift) {
         _toggleCapsLock(Keyboard.properties, Keyboard.elements);
         keyElement.classList.toggle('keyboard__key_active', Keyboard.properties.capsLock);
       }
+      Keyboard.elements.textarea.focus();
     } else if (keyCode === 'Backspace') {
       const textarea = Keyboard.elements.textarea;
       const cursorPosition = textarea.selectionStart;
@@ -75,7 +76,7 @@ export function handleKeyDown (event, Keyboard, keyLayout, keyLayoutShift) {
         Keyboard.properties.value = Keyboard.properties.value.slice(0, cursorPosition - 1) + Keyboard.properties.value.slice(cursorPosition);
         textarea.setSelectionRange(cursorPosition - 1, cursorPosition - 1);
       }
-      textarea.focus();
+      Keyboard.elements.textarea.focus();
       Keyboard._triggerEvent('oninput');
     } else if (keyCode === 'Enter') {
       Keyboard.properties.value += '\n';
@@ -98,6 +99,7 @@ export function handleKeyDown (event, Keyboard, keyLayout, keyLayoutShift) {
           }
         });
       }
+      Keyboard.elements.textarea.focus();
     } else if (keyCode !== 'Space' && keyCode !== 'ShiftLeft' && keyCode !== 'ShiftRight' && keyCode !== 'ControlLeft' && keyCode !== 'command' && keyCode !== 'MetaRight' && keyCode !== 'MetaLeft' && keyCode !== 'AltLeft' && keyCode !== 'AltRight' && keyCode !== 'ArrowUp' && keyCode !== 'ArrowDown' && keyCode !== 'ArrowLeft' && keyCode !== 'ArrowRight') {
       const keyText = keyElement.textContent.trim();
       Keyboard.properties.value += (Keyboard.properties.capsLock && !event.shiftKey) || (!Keyboard.properties.capsLock && event.shiftKey) ? keyText.toUpperCase() : keyText.toLowerCase();
@@ -120,6 +122,7 @@ export function handleKeyUp (event, Keyboard, keyLayout, keyLayoutShift) {
       if (keyCode === 'CapsLock') {
         _toggleCapsLock(Keyboard.properties, Keyboard.elements);
         keyElement.classList.toggle('keyboard__key_active', Keyboard.properties.capsLock);
+        Keyboard.elements.textarea.focus();
       }
     }
     if (keyCode === 'ShiftLeft' || keyCode === 'ShiftRight') {
@@ -136,6 +139,7 @@ export function handleKeyUp (event, Keyboard, keyLayout, keyLayoutShift) {
           }
         });
       }
+      Keyboard.elements.textarea.focus();
     } else {
       if (event.key.toLowerCase() === 'a') {
         Keyboard.properties.selectAll = false;

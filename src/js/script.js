@@ -147,6 +147,7 @@ const Keyboard = {
           keyElement.addEventListener('click', () => {
             this.properties.value += '    ';
             this._triggerEvent('oninput');
+            this.elements.textarea.focus();
           });
           break;
 
@@ -157,6 +158,7 @@ const Keyboard = {
           keyElement.addEventListener('click', () => {
             _toggleCapsLock(this.properties, this.elements);
             keyElement.classList.toggle('keyboard__key_active', this.properties.capsLock);
+            this.elements.textarea.focus();
           });
           break;
 
@@ -180,10 +182,11 @@ const Keyboard = {
             Keyboard.elements.keys.forEach((key, index) => {
               if (key.textContent.length === 1) {
                 key.textContent = layout[index];
+                this.elements.textarea.focus();
               }
             });
           });
-
+          this.elements.textarea.focus();
           break;
 
         case 'option':
@@ -217,7 +220,9 @@ const Keyboard = {
           keyElement.addEventListener('click', () => {
             this.properties.value += ' ';
             this._triggerEvent('oninput');
+            this.elements.textarea.focus();
           });
+          this.elements.textarea.focus();
           break;
 
         case 'up':
