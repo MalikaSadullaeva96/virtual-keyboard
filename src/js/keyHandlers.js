@@ -80,6 +80,7 @@ export function handleKeyDown (event, Keyboard, keyLayout, keyLayoutShift) {
     } else if (keyCode === 'Enter') {
       Keyboard.properties.value += '\n';
       Keyboard._triggerEvent('oninput');
+      Keyboard.elements.textarea.focus();
     } else if (keyCode === 'Tab') {
       Keyboard.properties.value += '    ';
       Keyboard._triggerEvent('oninput');
