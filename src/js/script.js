@@ -44,7 +44,7 @@ const Keyboard = {
 
     // create info
     this.elements.info = document.createElement('p');
-    this.elements.info.innerHTML = 'Клавиатура создана в операционной системе MacOS<br>Для переключения языка комбинация: ctrl + option<br>Для выделения текста: command + a';
+    this.elements.info.innerHTML = 'Клавиатура создана в операционной системе MacOS<br>Для переключения языка комбинация: ctrl + option';
     // end
 
     this.elements.main = document.createElement('div');
@@ -121,7 +121,7 @@ const Keyboard = {
           keyElement.classList.add('keyboard__key_wide');
           keyElement.innerHTML = createIconHTML('backspace');
           keyElement.addEventListener('click', () => {
-            const textarea = Keyboard.elements.textarea;
+            const textarea = Keyboard.elements.textarea; // textarea.value
             const cursorPosition = textarea.selectionStart;
             const selectionEnd = textarea.selectionEnd;
 
