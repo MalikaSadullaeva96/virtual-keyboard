@@ -35,10 +35,8 @@ export function handleKeyDown (event, Keyboard, keyLayout, keyLayoutShift) {
     keyElement.classList.add('keyboard__key_pressed');
     console.log(keyCode);
     if (keyCode === 'MetaLeft') {
-      console.log('aaaa');
       commandPressed = true;
     } else if (keyCode === 'KeyA' && commandPressed) {
-      console.log('------>uuuuuu');
       Keyboard.elements.textarea.select();
       Keyboard.properties.selectAll = true;
       controlPressed = false;
