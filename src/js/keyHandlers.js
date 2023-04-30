@@ -120,7 +120,8 @@ export function handleKeyUp (event, Keyboard, keyLayout, keyLayoutShift) {
         _toggleCapsLock(Keyboard.properties, Keyboard.elements);
         keyElement.classList.toggle('keyboard__key_active', Keyboard.properties.capsLock);
       }
-    } else if (keyCode === 'ShiftLeft' || keyCode === 'ShiftRight') {
+    }
+    if (keyCode === 'ShiftLeft' || keyCode === 'ShiftRight') {
       if (Keyboard.properties.language === 'EN') {
         Keyboard.elements.keys.forEach((key, index) => {
           if (key.textContent.length === 1) {
