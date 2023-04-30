@@ -3,6 +3,7 @@ import _toggleCapsLock from './/toggleCapsLock.js';
 import { russianLayoutShift, russianLayout } from './script.js';
 let controlPressed = false;
 let optionPressed = false;
+let commandPressed = false;
 
 function toggleLanguage (Keyboard, keyLayoutEN, keyLayoutRU) {
   if (Keyboard.properties.language === 'EN') {
@@ -25,40 +26,40 @@ function toggleLanguage (Keyboard, keyLayoutEN, keyLayoutRU) {
     });
   }
 }
-
 export function handleKeyDown (event, Keyboard, keyLayout, keyLayoutShift) {
-  const key = event.key;
+  // const key = event.key;
   const keyCode = event.code;
   const keyElement = Keyboard.elements.keysContainer.querySelector(`[data-key="${keyCode}"]`);
   if (keyElement) {
     event.preventDefault();
     keyElement.classList.add('keyboard__key_pressed');
-
-    // select whole text
-    if (event.metaKey || event.ctrlKey) {
-      if (key.toLowerCase() === 'a') {
-        Keyboard.elements.textarea.select();
-        Keyboard.properties.selectAll = true;
-        return;
-      }
+    console.log(keyCode);
+    if (keyCode === 'MetaLeft') {
+      commandPressed = true;
+    } else if (keyCode === 'KeyA' && commandPressed) {
+      Keyboard.elements.textarea.select();
+      Keyboard.properties.selectAll = true;
+      controlPressed = false;
+      return;
     }
+
     const textSelected = Keyboard.elements.textarea.selectionStart === 0 && Keyboard.elements.textarea.selectionEnd === Keyboard.properties.value.length;
 
-    if (key === 'Control') {
+    if (keyCode === 'ControlLeft') {
       controlPressed = true;
     }
-    if ((event.altKey) && controlPressed) {
+    if ((keyCode === 'AltLeft') && controlPressed) {
       optionPressed = true;
       toggleLanguage(Keyboard, keyLayout, russianLayout);
-    } else if (key === ' ') {
+    } else if (keyCode === 'Space') {
       Keyboard.properties.value += ' ';
       Keyboard._triggerEvent('oninput');
-    } else if (key === 'CapsLock') {
+    } else if (keyCode === 'CapsLock') {
       if (!event.repeat) {
         _toggleCapsLock(Keyboard.properties, Keyboard.elements);
         keyElement.classList.toggle('keyboard__key_active', Keyboard.properties.capsLock);
       }
-    } else if (key === 'Backspace') {
+    } else if (keyCode === 'Backspace') {
       const textarea = Keyboard.elements.textarea;
       const cursorPosition = textarea.selectionStart;
       const selectionEnd = textarea.selectionEnd;
@@ -72,13 +73,13 @@ export function handleKeyDown (event, Keyboard, keyLayout, keyLayoutShift) {
       }
       textarea.focus();
       Keyboard._triggerEvent('oninput');
-    } else if (key === 'Enter') {
+    } else if (keyCode === 'Enter') {
       Keyboard.properties.value += '\n';
       Keyboard._triggerEvent('oninput');
-    } else if (key === 'Tab') {
+    } else if (keyCode === 'Tab') {
       Keyboard.properties.value += '    ';
       Keyboard._triggerEvent('oninput');
-    } else if (key === 'Shift') {
+    } else if (keyCode === 'ShiftLeft' || keyCode === 'ShiftRight') {
       if (Keyboard.properties.language === 'EN') {
         Keyboard.elements.keys.forEach((key, index) => {
           if (key.textContent.length === 1) {
@@ -92,7 +93,7 @@ export function handleKeyDown (event, Keyboard, keyLayout, keyLayoutShift) {
           }
         });
       }
-    } else if (key !== 'Control' && key !== 'Meta' && key !== 'Alt' && key !== 'ArrowUp' && key !== 'ArrowDown' && key !== 'ArrowLeft' && key !== 'ArrowRight') {
+    } else if (keyCode !== 'Space' && keyCode !== 'ShiftLeft' && keyCode !== 'ShiftRight' && keyCode !== 'ControlLeft' && keyCode !== 'command' && keyCode !== 'MetaRight' && keyCode !== 'MetaLeft' && keyCode !== 'AltLeft' && keyCode !== 'AltRight' && keyCode !== 'ArrowUp' && keyCode !== 'ArrowDown' && keyCode !== 'ArrowLeft' && keyCode !== 'ArrowRight') {
       const keyText = keyElement.textContent.trim();
       Keyboard.properties.value += (Keyboard.properties.capsLock && !event.shiftKey) || (!Keyboard.properties.capsLock && event.shiftKey) ? keyText.toUpperCase() : keyText.toLowerCase();
       Keyboard._triggerEvent('oninput');
