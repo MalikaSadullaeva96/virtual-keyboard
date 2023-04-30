@@ -207,6 +207,7 @@ const Keyboard = {
             this._triggerEvent('oninput');
             this.elements.textarea.focus();
           });
+          this.elements.textarea.focus();
           break;
 
         case 'space':
