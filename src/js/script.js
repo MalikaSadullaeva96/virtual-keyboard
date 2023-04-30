@@ -205,6 +205,7 @@ const Keyboard = {
           keyElement.addEventListener('click', () => {
             this.properties.value += '\n';
             this._triggerEvent('oninput');
+            this.elements.textarea.focus();
           });
           break;
 
