@@ -89,25 +89,45 @@ export function handleKeyDown (event, Keyboard, keyLayout, keyLayoutShift) {
       Keyboard.properties.value += '    ';
       Keyboard._triggerEvent('oninput');
     } else if (keyCode === 'ShiftLeft' || keyCode === 'ShiftRight') {
-      shiftPressed = true;
-      console.log(shiftPressed);
-      if (Keyboard.properties.language === 'EN') {
-        Keyboard.elements.keys.forEach((key, index) => {
-          if (key.textContent.length === 1) {
-            key.textContent = event.shiftKey ? keyLayoutShift[index] : keyLayout[index];
-          }
-        });
-      } else if (Keyboard.properties.language === 'RU') {
-        Keyboard.elements.keys.forEach((key, index) => {
-          if (key.textContent.length === 1) {
-            key.textContent = event.shiftKey ? russianLayoutShift[index] : russianLayout[index];
-          }
-        });
+      if (!Keyboard.properties.capsLock) {
+        shiftPressed = true;
+        console.log(shiftPressed);
+        console.log('aaaaaaaaaaaaaaaaaa');
+        if (Keyboard.properties.language === 'EN') {
+          Keyboard.elements.keys.forEach((key, index) => {
+            if (key.textContent.length === 1) {
+              key.textContent = event.shiftKey ? keyLayoutShift[index] : keyLayout[index];
+            }
+          });
+        } else if (Keyboard.properties.language === 'RU') {
+          Keyboard.elements.keys.forEach((key, index) => {
+            if (key.textContent.length === 1) {
+              key.textContent = event.shiftKey ? russianLayoutShift[index] : russianLayout[index];
+            }
+          });
+        }
+      } else {
+        const numberRowIndices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        if (Keyboard.properties.language === 'EN') {
+          Keyboard.elements.keys.forEach((key, index) => {
+            if (numberRowIndices.includes(index)) {
+              key.textContent = event.shiftKey ? keyLayoutShift[index] : keyLayout[index];
+            }
+          });
+        } else if (Keyboard.properties.language === 'RU') {
+          Keyboard.elements.keys.forEach((key, index) => {
+            if (numberRowIndices.includes(index)) {
+              key.textContent = event.shiftKey ? russianLayoutShift[index] : russianLayout[index];
+            }
+          });
+        }
       }
       Keyboard.elements.textarea.focus();
     } else if (keyCode !== 'Space' && keyCode !== 'ShiftLeft' && keyCode !== 'ShiftRight' && keyCode !== 'ControlLeft' && keyCode !== 'command' && keyCode !== 'MetaRight' && keyCode !== 'MetaLeft' && keyCode !== 'AltLeft' && keyCode !== 'AltRight' && keyCode !== 'ArrowUp' && keyCode !== 'ArrowDown' && keyCode !== 'ArrowLeft' && keyCode !== 'ArrowRight') {
       const keyText = keyElement.textContent.trim();
-      Keyboard.properties.value += (Keyboard.properties.capsLock && !event.shiftKey) || (!Keyboard.properties.capsLock && event.shiftKey) ? keyText.toUpperCase() : keyText.toLowerCase();
+      // Keyboard.properties.value += (Keyboard.properties.capsLock && !event.shiftKey) || (!Keyboard.properties.capsLock && event.shiftKey) ? keyText.toUpperCase() : keyText.toLowerCase();
+      Keyboard.properties.value += (Keyboard.properties.capsLock && !shiftPressed) || (!Keyboard.properties.capsLock && shiftPressed) ? keyText.toUpperCase() : keyText.toLowerCase();
+
       Keyboard._triggerEvent('oninput');
     }
   }
