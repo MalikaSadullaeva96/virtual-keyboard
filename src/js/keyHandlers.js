@@ -4,6 +4,7 @@ import { russianLayoutShift, russianLayout } from './script.js';
 let controlPressed = false;
 let optionPressed = false;
 let commandPressed = false;
+let shiftPressed = false;
 
 function isMac () {
   return navigator.platform.toUpperCase().includes('MAC');
@@ -88,6 +89,8 @@ export function handleKeyDown (event, Keyboard, keyLayout, keyLayoutShift) {
       Keyboard.properties.value += '    ';
       Keyboard._triggerEvent('oninput');
     } else if (keyCode === 'ShiftLeft' || keyCode === 'ShiftRight') {
+      shiftPressed = true;
+      console.log(shiftPressed);
       if (Keyboard.properties.language === 'EN') {
         Keyboard.elements.keys.forEach((key, index) => {
           if (key.textContent.length === 1) {
@@ -128,16 +131,39 @@ export function handleKeyUp (event, Keyboard, keyLayout, keyLayoutShift) {
       }
     }
     if (keyCode === 'ShiftLeft' || keyCode === 'ShiftRight') {
-      if (Keyboard.properties.language === 'EN') {
+      shiftPressed = false;
+      // if (Keyboard.properties.language === 'EN') {
+      //   Keyboard.elements.keys.forEach((key, index) => {
+      //     if (key.textContent.length === 1) {
+      //       key.textContent = keyLayout[index];
+      //     }
+      //   });
+      // } else if (Keyboard.properties.language === 'RU') {
+      //   Keyboard.elements.keys.forEach((key, index) => {
+      //     if (key.textContent.length === 1) {
+      //       key.textContent = russianLayout[index];
+      //     }
+      //   });
+      // }
+      if (!Keyboard.properties.capsLock) {
+        if (Keyboard.properties.language === 'EN') {
+          Keyboard.elements.keys.forEach((key, index) => {
+            if (key.textContent.length === 1) {
+              key.textContent = keyLayout[index];
+            }
+          });
+        } else if (Keyboard.properties.language === 'RU') {
+          Keyboard.elements.keys.forEach((key, index) => {
+            if (key.textContent.length === 1) {
+              key.textContent = russianLayout[index];
+            }
+          });
+        }
+      } else {
+        const numberRowIndices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
         Keyboard.elements.keys.forEach((key, index) => {
-          if (key.textContent.length === 1) {
+          if (numberRowIndices.includes(index)) {
             key.textContent = keyLayout[index];
-          }
-        });
-      } else if (Keyboard.properties.language === 'RU') {
-        Keyboard.elements.keys.forEach((key, index) => {
-          if (key.textContent.length === 1) {
-            key.textContent = russianLayout[index];
           }
         });
       }
