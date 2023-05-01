@@ -1,0 +1,9 @@
+@mixin style ($w: 0,  $padding-left: 0, $padding-right: 0, $padding-top: 0, $padding-bottom: 0, $bgc: (0,0,0,1), $margin: 0) {
+    width: $w;
+    padding-left: $padding-left;
+    padding-right: $padding-right;
+    padding-top: $padding-top;
+    padding-bottom: $padding-bottom;
+    background-color: $bgc;
+    margin: $margin;
+}

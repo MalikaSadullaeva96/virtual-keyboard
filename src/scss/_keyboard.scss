@@ -1,0 +1,47 @@
+@import 'mixin';
+
+%style {
+    background-color: #9ab4d9;
+    border-radius: 20%;
+}
+
+.keyboard {
+    @include style($w: 100%, $padding-top: 50px, $padding-bottom: 50px, $bgc: #FFC0CB);
+    bottom: 0;
+    user-select: none;
+    transition: bottom 0.4s;
+
+    &__keys {
+        text-align: center;
+    }
+
+    &__key {
+        height: 40px;
+        @include style($w: 5%, $bgc:rgba(255, 255, 255, 0.9), $margin: 3px);
+        border: none;
+        border-radius: 5%;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        vertical-align: top;
+    }
+
+    &__key:active,
+    .keyboard__key_pressed {
+        @extend %style;
+    }
+
+    &__key_wide {
+        width: 8%;
+    }
+
+    &__key_wide-extra {
+        width: 15%;
+    }
+
+}
+
+.keyboard__key_wide-shift {
+    width: 15%;
+}
