@@ -159,10 +159,9 @@ const Keyboard = {
         case 'caps lock':
           keyElement.classList.add('keyboard__key_wide', 'keyboard__key_activatable');
           keyElement.innerHTML = 'caps lock';
-
           keyElement.addEventListener('click', () => {
             _toggleCapsLock(this.properties, this.elements);
-            keyElement.classList.toggle('keyboard__key_active', this.properties.capsLock);
+            keyElement.classList.toggle('keyboard__key_pressed', this.properties.capsLock);
             this.elements.textarea.focus();
           });
           break;

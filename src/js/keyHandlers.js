@@ -64,7 +64,7 @@ export function handleKeyDown (event, Keyboard, keyLayout, keyLayoutShift) {
     } else if (keyCode === 'CapsLock') {
       if (!event.repeat) {
         _toggleCapsLock(Keyboard.properties, Keyboard.elements);
-        keyElement.classList.toggle('keyboard__key_active', Keyboard.properties.capsLock);
+        keyElement.classList.toggle('keyboard__key_pressed', Keyboard.properties.capsLock);
       }
       Keyboard.elements.textarea.focus();
     } else if (keyCode === 'Backspace') {
@@ -125,7 +125,6 @@ export function handleKeyDown (event, Keyboard, keyLayout, keyLayoutShift) {
       Keyboard.elements.textarea.focus();
     } else if (keyCode !== 'Space' && keyCode !== 'ShiftLeft' && keyCode !== 'ShiftRight' && keyCode !== 'ControlLeft' && keyCode !== 'command' && keyCode !== 'MetaRight' && keyCode !== 'MetaLeft' && keyCode !== 'AltLeft' && keyCode !== 'AltRight' && keyCode !== 'ArrowUp' && keyCode !== 'ArrowDown' && keyCode !== 'ArrowLeft' && keyCode !== 'ArrowRight') {
       const keyText = keyElement.textContent.trim();
-      // Keyboard.properties.value += (Keyboard.properties.capsLock && !event.shiftKey) || (!Keyboard.properties.capsLock && event.shiftKey) ? keyText.toUpperCase() : keyText.toLowerCase();
       Keyboard.properties.value += (Keyboard.properties.capsLock && !shiftPressed) || (!Keyboard.properties.capsLock && shiftPressed) ? keyText.toUpperCase() : keyText.toLowerCase();
 
       Keyboard._triggerEvent('oninput');
