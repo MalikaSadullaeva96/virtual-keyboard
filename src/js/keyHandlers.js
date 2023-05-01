@@ -132,19 +132,6 @@ export function handleKeyUp (event, Keyboard, keyLayout, keyLayoutShift) {
     }
     if (keyCode === 'ShiftLeft' || keyCode === 'ShiftRight') {
       shiftPressed = false;
-      // if (Keyboard.properties.language === 'EN') {
-      //   Keyboard.elements.keys.forEach((key, index) => {
-      //     if (key.textContent.length === 1) {
-      //       key.textContent = keyLayout[index];
-      //     }
-      //   });
-      // } else if (Keyboard.properties.language === 'RU') {
-      //   Keyboard.elements.keys.forEach((key, index) => {
-      //     if (key.textContent.length === 1) {
-      //       key.textContent = russianLayout[index];
-      //     }
-      //   });
-      // }
       if (!Keyboard.properties.capsLock) {
         if (Keyboard.properties.language === 'EN') {
           Keyboard.elements.keys.forEach((key, index) => {

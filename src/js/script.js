@@ -180,18 +180,26 @@ const Keyboard = {
               }
             });
           });
-
           keyElement.addEventListener('mouseup', () => {
             shiftPressed = false;
-            const layout = Keyboard.properties.language === 'EN' ? keyLayout : russianLayout;
-            Keyboard.elements.keys.forEach((key, index) => {
-              if (key.textContent.length === 1) {
-                key.textContent = layout[index];
-                this.elements.textarea.focus();
-              }
-            });
+            console.log(shiftPressed);
+
+            if (!this.properties.capsLock) {
+              const layout = Keyboard.properties.language === 'EN' ? keyLayout : russianLayout;
+              Keyboard.elements.keys.forEach((key, index) => {
+                if (key.textContent.length === 1) {
+                  key.textContent = layout[index];
+                }
+              });
+            } else {
+              Keyboard.elements.keys.forEach((key, index) => {
+                if (key.textContent.length === 1 && index < 13) {
+                  key.textContent = keyLayout[index];
+                }
+              });
+            }
           });
-          this.elements.textarea.focus();
+
           break;
 
         case 'option':
