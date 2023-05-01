@@ -9,7 +9,7 @@ function isMac () {
   return navigator.platform.toUpperCase().includes('MAC');
 }
 
-function toggleLanguage (Keyboard, keyLayoutEN, keyLayoutRU) {
+export function toggleLanguage (Keyboard, keyLayoutEN, keyLayoutRU) {
   if (Keyboard.properties.language === 'EN') {
     Keyboard.properties.language = 'RU';
     Keyboard.elements.keys.forEach((key, index) => {
@@ -29,6 +29,8 @@ function toggleLanguage (Keyboard, keyLayoutEN, keyLayoutRU) {
       }
     });
   }
+  localStorage.setItem('selectedLanguage', Keyboard.properties.language);
+  console.log(localStorage.getItem(Keyboard.properties.language));
 }
 export function handleKeyDown (event, Keyboard, keyLayout, keyLayoutShift) {
   // const key = event.key;

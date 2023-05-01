@@ -1,10 +1,11 @@
 /* eslint-disable import/extensions */
 import createIconHTML from './/icon.js';
 import _toggleCapsLock from './/toggleCapsLock.js';
-import { handleKeyDown, handleKeyUp } from './keyHandlers.js';
+import { handleKeyDown, handleKeyUp, toggleLanguage } from './keyHandlers.js';
 import { addTextareaNavigation } from './/textAreaNav.js';
 let ctrlAPressed = false;
 let shiftPressed = false;
+const savedLanguage = localStorage.getItem('selectedLanguage') || 'EN';
 
 let shifCount = 0;
 const keyLayoutShift = ['~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', 'delete', 'tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '{', '}', '|', 'caps lock', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '"', 'enter', 'shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?', 'up', 'shift', 'ctrl', 'option', 'command', 'space', 'command', 'option', 'left', 'down', 'right'];
@@ -100,6 +101,10 @@ const Keyboard = {
 
     // move cursor
     addTextareaNavigation(this.elements.textarea);
+
+    if (savedLanguage === 'RU') {
+      toggleLanguage(Keyboard, keyLayout, russianLayout);
+    }
   },
 
   _createKeys () {
