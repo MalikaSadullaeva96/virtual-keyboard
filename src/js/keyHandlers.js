@@ -63,7 +63,7 @@ export function handleKeyDown (event, Keyboard, keyLayout, keyLayoutShift) {
     } else if (keyCode === 'CapsLock') {
       if (!event.repeat) {
         _toggleCapsLock(Keyboard.properties, Keyboard.elements);
-        keyElement.classList.toggle('keyboard__key_pressed', Keyboard.properties.capsLock);
+        keyElement.classList.toggle('keyboard__key_active', this.properties.capsLock);
       }
       Keyboard.elements.textarea.focus();
     } else if (keyCode === 'Backspace') {
